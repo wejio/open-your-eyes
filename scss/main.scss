@@ -4,6 +4,9 @@ $eye-overflow: hidden;
 $lid-opacity: 1;
 $lid-color: #444;
 $animation-time: 5s;
+$animation-delay: 3s;
+$animation-count: 1;
+$animation-direction: forwards;
 
 @mixin square($size) {
     display: block;
@@ -70,7 +73,7 @@ body {
             left: eye-lid-pix(map-get($left-eye-stages, "closed"));
             top: eye-lid-pix(map-get($left-eye-stages, "closed"));
             border-radius: 0 0 80% 0;
-            animation: blink-left-eye $animation-time 1 forwards;
+            animation: blink-left-eye $animation-time $animation-delay $animation-count $animation-direction;
         }        
     }
     &_right {
@@ -85,7 +88,7 @@ body {
             right: eye-lid-pix(map-get($right-eye-stages, "closed"));
             top: eye-lid-pix(map-get($right-eye-stages, "closed"));
             border-radius: 0 80% 0 0;
-            animation: blink-right-eye $animation-time 1 forwards;
+            animation: blink-right-eye $animation-time $animation-delay $animation-count $animation-direction;
         }
     }
     .iris {
