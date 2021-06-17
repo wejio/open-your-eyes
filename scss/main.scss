@@ -1,0 +1,222 @@
+$eye-size: 90;
+$eye-space: 2;
+$eye-overflow: hidden;
+$lid-opacity: 1;
+$lid-color: #444;
+$animation-time: 5s;
+
+@mixin square($size) {
+    display: block;
+    width: #{$size}px;
+    height: #{$size}px;
+}
+
+@function eye-lid-pix($k) {
+    @return #{$eye-size/$k}px;
+}
+$left-eye-stages: (
+    "closed": -2.8,
+    "nearly-closed": -2.5,
+    "sleepy": -2,
+    "tired": -1.5,
+    "open": -1.2,
+    "wide-open": -1.06
+);
+$right-eye-stages: (
+    "closed": -6,
+    "nearly-closed": -11,
+    "sleepy": -60,
+    "tired": 6.1,
+    "open": 3.1,
+    "wide-open": 2.3
+);
+* {
+    box-sizing: border-box;
+    outline: none;
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+body {
+    background-color: #444;
+}
+.eye {
+    @include square($eye-size);
+    background-color: #ffe;
+    position: absolute;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: $eye-overflow;
+
+    .lid {
+        z-index: 2;
+        position: absolute;
+        @include square($eye-size*1.5);
+        background-color: $lid-color;
+        opacity: $lid-opacity;
+        border: 2px solid #222;
+    }
+    &_left {
+        top: 10vh;
+        left: calc(50vw - (#{ $eye-space * $eye-size}px));
+        border: 1px solid #404040;
+        border-top: 2px solid #333;
+        border-right: 3px solid #222;
+        border-radius: 70% 0 80% 0;
+        transform: rotate(45deg);
+        .lid {
+            left: eye-lid-pix(map-get($left-eye-stages, "closed"));
+            top: eye-lid-pix(map-get($left-eye-stages, "closed"));
+            border-radius: 0 0 80% 0;
+            animation: blink-left-eye $animation-time 1 forwards;
+        }        
+    }
+    &_right {
+        top: 10vh;
+        right: calc(50vw - (#{ $eye-space * $eye-size}px));
+        border: 1px solid #404040;
+        border-bottom: 2px solid #333;
+        border-right: 3px solid #222;
+        border-radius: 0 80% 0 70%;
+        transform: rotate(-225deg);
+        .lid {
+            right: eye-lid-pix(map-get($right-eye-stages, "closed"));
+            top: eye-lid-pix(map-get($right-eye-stages, "closed"));
+            border-radius: 0 80% 0 0;
+            animation: blink-right-eye $animation-time 1 forwards;
+        }
+    }
+    .iris {
+        background: radial-gradient(circle, teal, darkblue);
+        border: 1px solid #444;
+        @include square($eye-size/1.4);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .pupil {
+        background-color:#000;
+        @include square($eye-size/4);
+        border-radius: 50%;
+    }
+}
+
+@keyframes blink-left-eye {
+    5% {
+        left: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+    }
+    6% {
+        left: eye-lid-pix(map-get($left-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "closed"));
+    }
+    14% {
+        left: eye-lid-pix(map-get($left-eye-stages, "sleepy"));
+        top: eye-lid-pix(map-get($left-eye-stages, "sleepy"));
+    }
+    15% {
+        left: eye-lid-pix(map-get($left-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "closed"));
+    }
+    24% {
+        left: eye-lid-pix(map-get($left-eye-stages, "tired"));
+        top: eye-lid-pix(map-get($left-eye-stages, "tired"));
+    }
+    25% {
+        left: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+    }
+    45% {
+        left: eye-lid-pix(map-get($left-eye-stages, "open"));
+        top: eye-lid-pix(map-get($left-eye-stages, "open"));
+    }
+    48% {
+        left: eye-lid-pix(map-get($left-eye-stages, "sleepy"));
+        top: eye-lid-pix(map-get($left-eye-stages, "sleepy"));
+    }
+    50% {
+        left: eye-lid-pix(map-get($left-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "closed"));
+    }
+    60% {
+        left: eye-lid-pix(map-get($left-eye-stages, "open"));
+        top: eye-lid-pix(map-get($left-eye-stages, "open"));
+    }
+    75% {
+        left: eye-lid-pix(map-get($left-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "closed"));
+    }
+    90% {
+        left: eye-lid-pix(map-get($left-eye-stages, "open"));
+        top: eye-lid-pix(map-get($left-eye-stages, "open"));
+    }
+    95% {
+        left: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($left-eye-stages, "nearly-closed"));
+    }
+    100% {
+        left: eye-lid-pix(map-get($left-eye-stages, "wide-open"));
+        top: eye-lid-pix(map-get($left-eye-stages, "wide-open"));
+    }
+}
+@keyframes blink-right-eye {
+    5% {
+        right: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+    }
+    6% {
+        right: eye-lid-pix(map-get($right-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "closed"));
+    }
+    14% {
+        right: eye-lid-pix(map-get($right-eye-stages, "sleepy"));
+        top: eye-lid-pix(map-get($right-eye-stages, "sleepy"));
+    }
+    15% {
+        right: eye-lid-pix(map-get($right-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "closed"));
+    }
+    24% {
+        right: eye-lid-pix(map-get($right-eye-stages, "tired"));
+        top: eye-lid-pix(map-get($right-eye-stages, "tired"));
+    }
+    25% {
+        right: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+    }
+    45% {
+        right: eye-lid-pix(map-get($right-eye-stages, "open"));
+        top: eye-lid-pix(map-get($right-eye-stages, "open"));
+    }
+    48% {
+        right: eye-lid-pix(map-get($right-eye-stages, "sleepy"));
+        top: eye-lid-pix(map-get($right-eye-stages, "sleepy"));
+    }
+    50% {
+        right: eye-lid-pix(map-get($right-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "closed"));
+    }
+    60% {
+        right: eye-lid-pix(map-get($right-eye-stages, "open"));
+        top: eye-lid-pix(map-get($right-eye-stages, "open"));
+    }
+    75% {
+        right: eye-lid-pix(map-get($right-eye-stages, "closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "closed"));
+    }
+    90% {
+        right: eye-lid-pix(map-get($right-eye-stages, "open"));
+        top: eye-lid-pix(map-get($right-eye-stages, "open"));
+    }
+    95% {
+        right: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+        top: eye-lid-pix(map-get($right-eye-stages, "nearly-closed"));
+    }
+    100% {
+        right: eye-lid-pix(map-get($right-eye-stages, "wide-open"));
+        top: eye-lid-pix(map-get($right-eye-stages, "wide-open"));
+    }
+}
